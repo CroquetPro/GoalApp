@@ -7,6 +7,17 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+<% if current_user %>
+<%= current_user.username %>
+<% end %>
+
+  <% if flash[:notice] %>
+    <ul>
+      <% flash[:notice].each do |notice| %>
+        <li><%= notice %></li>
+      <% end %>
+    </ul>
+  <% end %>
 
 <%= yield %>
 
