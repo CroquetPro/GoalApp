@@ -46,7 +46,50 @@ feature "Sign Up" do
 end
 
 feature "Sign Out" do
+  before :each do
+    sign_up("new_user")
+  end
 
+  scenario "Has a sign out button" do
+    expect(page).to have_button "Sign Out"
+  end
+
+  scenario "logs the user out and redirects them to the sign in page" do
+    click_button "Sign Out"
+    expect(page).to have_content "Sign In"
+    expect(page).not_to have_content "new_user"
+  end
+end
+
+feature "Sign In" do
+  before :each do
+    visit "/session/new"
+  end
+
+  scenario "has a sign in page" do
+    expect(page).to have_content "Sign In"
+  end
+
+  scenario "takes a username and password" do
+    expect(page).to have_content("Username")
+    expect(page).to have_content("Password")
+  end
+
+  scenario "rerenders sign in on failure and saves username if present" do
+    fill_in "Username", with: "user"
+    click_button "Submit"
+    expect(page).to have_content "Sign In"
+    expect(find_field('Username').value).to eq("user")
+  end
+
+  scenario "takes user to goals page" do
+    sign_up("user")
+    click_button "Sign Out"
+    sign_in("user")
+    expect(page).to have_content "user"
+    expect(page).to have_content "Goals"
+    expect(page).not_to have_content "Sign In"
+  end
 end
 #
 # feature "the signup process" do

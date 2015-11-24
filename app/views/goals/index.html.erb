@@ -1,1 +1,11 @@
 <h1>Goals</h1>
+<% if @personal_goals %>
+  <% @personal_goals.each do |goal| %>
+    <%= link_to goal.title, goal_url(goal) %> <br>
+  <% end %>
+<% end %>
+<% @public_goals.each do |goal| %>
+  <%= link_to goal.title, goal_url(goal) %> <br>
+<% end %>
+<br><br>
+<%= link_to "New Goal", new_goal_url %>
